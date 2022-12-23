@@ -1,5 +1,5 @@
 # TemperatureChamberNectowLab
-This is the archive of codes and models of the animal chamber used in Nectow Lab
+This is the archive of codes and models of the animal chamber used in Nectow Lab.  
 The previous repo for sensors alone has been deprecated and aggregated into this repo.
 
 The codes necessary to run the sensors are under Software/Sensor directory.
