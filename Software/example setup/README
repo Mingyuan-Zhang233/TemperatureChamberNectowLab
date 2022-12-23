@@ -1,1 +1,2 @@
-This is an example of recording set up, which assumes the Fipster directory is at "/Fipster"
+This is an example of recording set up, which includes everything needed to record the signals and process the data. 
+It assumes the Fipster directory is at "/Fipster", which can be changed
