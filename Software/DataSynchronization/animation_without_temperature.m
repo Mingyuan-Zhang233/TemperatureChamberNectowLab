@@ -3,11 +3,9 @@ clc;
 close all
 clear;
 
-smoothing = true; % Smoothing Calcium signal if true 
-smoothness = 1; % Smoothing windwos in second
-[aligned_data, signal] = temp_sync_wrapper(smoothing, smoothness);
-
-
+% add path optional
+addpath('C:\Users\NectowLab\Desktop\Fipster')
+signal = FIP_signal('User input');
 %% Variables
 
 Start_Time =800; %%% seconds
@@ -22,15 +20,14 @@ if (max(abs(diff(pulse))) > 0.1)
     warning("Multiple TTL pulses detected. Using manually entered video_delay_start!")
 else
     video_delay_start = pulse(find(diff(pulse)<=mean(abs(diff(pulse))), 1));
+    disp(['Auto Video Delay: ' num2str(video_delay_start)]);
 end
 %% make an array from data
 
 
 %dFarray = table2array(dF);
-plot_time = aligned_data(:,2);
-FIP_data = aligned_data(:,1);
-T1_data = aligned_data(:,3);
-T2_data = aligned_data(:,4);
+plot_time = signal.data{1,1}(:,2);
+FIP_data = signal.data{1,1}(:,1);
 
 
 %% Create video reader object as 'v'
@@ -44,7 +41,6 @@ frameratevideo=v.FrameRate;
 figure('units','pixels','position',[0 0 figure_size(1) figure_size(2)])
 v.CurrentTime = Start_Time;
 plot_CD = subplot(2,1,1);
-yyaxis left;
 xlabel('Time(s)');
 ylabel('dF/F');
 FIP_curve = animatedline('Color', 'b');
@@ -53,13 +49,8 @@ FIP_curve = animatedline('Color', 'b');
 [~, end_index] = min(abs(plot_time-End_Time));
 
 plot_CD.XLimMode='auto';
-
-% temperature curves
-yyaxis right;
-ylabel('Temperature (C)')
-T1_curve = animatedline('Color', 'g');
-T2_curve = animatedline("Color", 'r');
-legend('df/F', 'Temperature 1',  'Temperature 2','Location','northwest');
+% legend optional
+% legend('df/F', 'Location','northwest');
 
 
 
@@ -92,8 +83,6 @@ while c_time<End_Time
     %dF signal plotted
     [~, time_stamp]=min(abs(plot_time-c_time_corrected));
         addpoints(FIP_curve,plot_time(time_stamp),FIP_data(time_stamp));
-        addpoints(T1_curve,plot_time(time_stamp),T1_data(time_stamp));
-        addpoints(T2_curve,plot_time(time_stamp),T2_data(time_stamp));
         xlim auto
         ylim auto
         drawnow
@@ -111,7 +100,6 @@ while c_time<End_Time
 
 end
 catch 
-    warning("unexpected termination")
-    close(w);
+    warning("unexpected termination");
 end
 close(w);
