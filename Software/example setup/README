@@ -1,2 +1,3 @@
 This is an example of recording set up, which includes everything needed to record the signals and process the data. 
 It assumes the Fipster directory is at "/Fipster", which can be changed
+To run the recording example, place all files in the same directory and run Example_recording.m
